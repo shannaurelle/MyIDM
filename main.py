@@ -4,7 +4,7 @@ Author: Shann Aurelle Ripalda
 Date of last revision: November 30, 2020
 Description: A download accelerator for all platforms. It runs
              in the console.
-Roadmap: Make a batch download using text file as storage and run with a click.
+Roadmap: Show the speed of the connection. Download files in a priority queue.
 """
 # Multi purpose downloader script from ade@pipe-devnull.com
 # Code is from a rewrite to Python 3 from Python 2.7 by Fausan Elka
