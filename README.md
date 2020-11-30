@@ -31,9 +31,11 @@ Using python pip:
 2. On the terminal type the following
 > python main.py -o "destination" -i "inputJSONfile" -f "URL1,URL2,URL3" 
 
-Flags
+###### Flags
 -o -> indicates that the string after it is the folder where you'll store the downloaded file
+
 -i -> indicates that the string after it is the filename of the json file where the URLS are stored
+
 -f -> indicates that the string after it is/are the URL links to the files 
 
 ## Versioning
