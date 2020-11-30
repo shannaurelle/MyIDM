@@ -29,7 +29,8 @@ Using python pip:
 1. Open the terminal and go to the folder where main.py is located
 
 2. On the terminal type the following
-> python main.py -o "destination" -i "inputJSONfile" -f "URL1,URL2,URL3"
+> python main.py -o "destination" -i "inputJSONfile" -f "URL1,URL2,URL3" 
+
 Flags
 -o -> indicates that the string after it is the folder where you'll store the downloaded file
 -i -> indicates that the string after it is the filename of the json file where the URLS are stored
