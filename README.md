@@ -5,6 +5,13 @@ A Command Line Interface for downloading files in bulk. Built using Python 3.
 1. Runs script using URL as links
 2. Can read JSON files for web scraping support
 
+## Usage
+On your command terminal type the following
+> python main.py -o "destination" -i "inputJSONfile" -f "URL1,URL2,URL3"
+-o -> indicates that the string after it is the folder where you'll store the downloaded file
+-i -> indicates that the string after it is the filename of the json file where the URLS are stored
+-f -> indicates that the string after it is/are the URL links to the files 
+
 ## Versioning
 This app is currently at 0.1.0. Versioning is done using semantic versioning.
 
