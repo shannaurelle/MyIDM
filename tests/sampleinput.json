@@ -1,0 +1,14 @@
+[
+    {
+        "link_name": "Sample 1 (24KB)",
+        "link_address": "https://file-examples-com.github.io/uploads/2017/02/file_example_XML_24kb.xml"
+    },
+    {
+        "link_name": "Sample 2 (5MB)",
+        "link_address": "https://file-examples-com.github.io/uploads/2017/02/zip_5MB.zip"
+    },
+    {
+        "link_name": "Sample 3 (1KB)",
+        "link_address": "https://file-examples-com.github.io/uploads/2017/02/file_example_JSON_1kb.json"
+    }
+]
