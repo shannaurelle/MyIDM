@@ -1,7 +1,7 @@
 """
 MyIDM: Python multithreaded CLI download manager
 Author: Shann Aurelle Ripalda
-Date of last revision: November 30, 2020
+Date of last revision: December 2, 2020
 Description: A download accelerator for all platforms. It runs
              in the console.
 Roadmap: Show the speed of the connection. Download files in a priority queue.
@@ -68,13 +68,13 @@ class DownloadManager():
         # Create a thread pool and give them a queue
         for i in range(self.thread_count):
             t = Downloader(queue, self.output_directory)
-            t.setDaemon(True)
+            t.daemon = True
             t.start()
         # Load the queue from the download dict
         for linkname in self.download_dict:
             queue.put(self.download_dict[linkname])
         # Wait for the queue to finish
-        queue.join()
+        queue.join()/
         return
  
 parser = argparse.ArgumentParser()
