@@ -54,3 +54,6 @@ Want to contribute? Read the open-source guidelines for contributing to this rep
 Feel free to send an issue to this repository in case of any errors in part of the script.
 Note that this script is UNSTABLE for files larger than 4 Mb.
 
+## Acknowledgments
+Big thanks to [mmfallacy](github.com/mmfallacy/) for the virtualenv files, testing script, and file structure change.
+
