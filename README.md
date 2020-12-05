@@ -45,7 +45,7 @@ Using python pip:
 -f -> indicates that the string after it is/are the URL links to the files 
 
 ## Versioning
-This app is currently at 0.1.0. Versioning is done using semantic versioning.
+This app is currently at 0.1.2. Versioning is done using semantic versioning.
 
 ## Contributions
 Want to contribute? Read the open-source guidelines for contributing to this repository.
