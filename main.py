@@ -21,6 +21,16 @@ import binascii
 import urllib.request
 import requests
 import simplejson as json
+
+display_on_console = print
+
+def display_download_details(inputfile,output_directory,flist):
+    print("----------pydownload----------------")
+    print("------------------------------------")
+    print("JSON file:             {0}".format(inputfile))
+    print("Output Directory:      {0}".format(output_directory))
+    print("File list:             {0}".format(flist))
+    print("------------------------------------")
  
 class Downloader(Thread):
     """ Downloader class - reads queue and downloads each file in succession """
@@ -34,7 +44,7 @@ class Downloader(Thread):
             # gets the url from the queue
             url = self.queue.get()
             # download the file
-            print("* Thread {0} - processing URL".format(self.name))
+            display_on_console("* Thread {0} - processing URL".format(self.name))
             self.download_file(url)
             # send a signal to the queue that the job is done
             self.queue.task_done()
@@ -43,14 +53,16 @@ class Downloader(Thread):
         """ download file """
         t_start = time.perf_counter()
         r = requests.get(url)
+
         if r.status_code == 200:
             t_elapsed = time.perf_counter() - t_start
-            print("* Thread: {0} Downloaded {1} in {2} seconds".format(self.name, url, str(t_elapsed)))
+            display_on_console("* Thread: {0} Downloaded {1} in {2} seconds".format(self.name, url, str(t_elapsed)))
             fname = self.output_directory + '/' + os.path.basename(urllib.request.unquote(url))
             with open(fname, 'wb') as out:
                 out.write(r.content)
+
         else:
-            print("* Thread: {0} Bad URL: {1}".format(self.name, url))
+            display_on_console("* Thread: {0} Bad URL: {1}".format(self.name, url))
  
 class DownloadManager():
     """ Spawns dowloader threads and manages URL downloads queue """
@@ -65,16 +77,19 @@ class DownloadManager():
         then feed the threads URLs via the queue
         """
         queue = Queue()
+
         # Create a thread pool and give them a queue
         for i in range(self.thread_count):
             t = Downloader(queue, self.output_directory)
             t.daemon = True
             t.start()
+
         # Load the queue from the download dict
         for linkname in self.download_dict:
             queue.put(self.download_dict[linkname])
+
         # Wait for the queue to finish
-        queue.join()/
+        queue.join()
         return
  
 parser = argparse.ArgumentParser()
@@ -87,34 +102,39 @@ def main(argv):
     """ Execute """
     inputfile = None
     flist = None
+
     if argv.output:
         output_directory = argv.output
+
     else:
-        print(parser.usage)
+        display_on_console(parser.usage)
         sys.exit(2)
+
     if argv.ifile:
         inputfile = argv.ifile
+
     elif argv.flist:
         flist = argv.flist.split(',')
-    print("----------pydownload----------------")
-    print("------------------------------------")
-    print("JSON file:             {0}".format(inputfile))
-    print("Output Directory:      {0}".format(output_directory))
-    print("File list:             {0}".format(flist))
-    print("------------------------------------")
+
+    display_download_details(inputfile,output_directory,flist)
+
     download_dict = {}
+
     if inputfile is not None:
         fp = open(inputfile)
         url_list = json.load(fp)
         for url in url_list:
             download_dict[url['link_name']] = url['link_address']
+
     if flist is not None:
         for f in flist:
             download_dict[str(f)] = f
+
     if not download_dict:
         print("* No URLS to download, got the usage right?")
         print("USAGE: " + parser.usage)
         sys.exit(2)
+
     download_manager = DownloadManager(download_dict, output_directory, 4)
     download_manager.begin_downloads()
  
