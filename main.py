@@ -55,7 +55,7 @@ class Downloader(Thread):
     def download_file(self, url):
         """ download file """
         t_start = time.perf_counter()
-        r = requests.get(url)
+        r = requests.get(url, timeout=0.01)
 
         # If the connection to the server is OK, start downloading the file
         # HTTP Status Code 200 means OK 
