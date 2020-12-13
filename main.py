@@ -54,20 +54,36 @@ class Downloader(Thread):
  
     def download_file(self, url):
         """ download file """
+        # Retry object to handle low internet connection, bad URL, and max server limit reached
+        # parameters: total, status_forcelist, and method_whitelist
+        # total -> the number of retries allowable by the thread
+        # status_forcelist -> the HTTP Status Codes where a Retry must be done
+        # method_whitelist -> HTTP requests to perform during a retry 
+        # Note: With default method_whitelist includes all all HTTP methods except POST) 
+        # since POST always adds a new data
+        # HTTP Status Code 429 means Maximum server limit reached, and in this case, always retry 
+        retry_strategy = Retry(total=3,status_forcelist=[429,500,502,503,504],method_whitelist=["HEAD","GET","OPTIONS"])
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        http = requests.Session()
+        http.mount("https://", adapter)
+        http.mount("http://", adapter)
         t_start = time.perf_counter()
-        r = requests.get(url, timeout=0.01)
+        # timeout is measured in seconds
+        r = http.get(url, timeout=1) 
+        try: 
+            # If the connection to the server is OK, start downloading the file
+            # HTTP Status Code 200 means OK 
+            if r.status_code == 200:
+                t_elapsed = time.perf_counter() - t_start
+                display_on_console("* Thread: {0} Downloaded {1} in {2} seconds".format(self.name, url, str(t_elapsed)))
+                fname = self.output_directory + '/' + os.path.basename(urllib.request.unquote(url))
+                with open(fname, 'wb') as out:
+                    out.write(r.content)
 
-        # If the connection to the server is OK, start downloading the file
-        # HTTP Status Code 200 means OK 
-        if r.status_code == 200:
-            t_elapsed = time.perf_counter() - t_start
-            display_on_console("* Thread: {0} Downloaded {1} in {2} seconds".format(self.name, url, str(t_elapsed)))
-            fname = self.output_directory + '/' + os.path.basename(urllib.request.unquote(url))
-            with open(fname, 'wb') as out:
-                out.write(r.content)
-
-        else:
-            display_on_console("* Thread: {0} Bad URL: {1}".format(self.name, url))
+            else:
+                display_on_console("* Thread: {0} Bad URL: {1}".format(self.name, url))
+        except HTTPError:
+            display_on_console
  
 class DownloadManager():
     """ Spawns dowloader threads and manages URL downloads queue """
