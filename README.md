@@ -7,6 +7,8 @@ v0.1.1 - added test scripts and virtualenv files
 
 v0.1.2 - refactored code 
 
+v0.1.3 - added retries to the main code 
+
 ## Current Features
 1. Runs script using URL as links
 2. Can read JSON files for web scraping support
