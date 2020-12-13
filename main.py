@@ -20,7 +20,10 @@ import argparse
 import binascii
 import urllib.request
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 import simplejson as json
+
 
 display_on_console = print
 
@@ -54,6 +57,8 @@ class Downloader(Thread):
         t_start = time.perf_counter()
         r = requests.get(url)
 
+        # If the connection to the server is OK, start downloading the file
+        # HTTP Status Code 200 means OK 
         if r.status_code == 200:
             t_elapsed = time.perf_counter() - t_start
             display_on_console("* Thread: {0} Downloaded {1} in {2} seconds".format(self.name, url, str(t_elapsed)))
@@ -94,6 +99,9 @@ class DownloadManager():
  
 parser = argparse.ArgumentParser()
 parser.usage = "pydownload.py -o <OutputDirectory> -i <JSONinputfile> -f <url1,url2,url3>"
+# -o represents output file
+# -i represent the json input file
+# -f represents the string URLs separated by comma
 parser.add_argument('-o', '--output')
 parser.add_argument('-i', '--ifile')
 parser.add_argument('-f', '--flist')
